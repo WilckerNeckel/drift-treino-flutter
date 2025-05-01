@@ -8,7 +8,7 @@ void main() async {
   await database.into(database.todoItems).insert(
     TodoItemsCompanion.insert(
       title: 'todo: finish drift setup',
-      content: 'We can now write something new',
+      content: 'Wilcker richard',
     ),
   );
 
