@@ -3,16 +3,16 @@ import 'package:project/database/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final database = AppDatabase();
+  final db = AppDatabase();
 
-  await database.into(database.todoItems).insert(
+  await db.into(db.todoItems).insert(
     TodoItemsCompanion.insert(
       title: 'todo: finish drift setup',
       content: 'Mudando messagem ',
     ),
   );
 
-  runApp(MyApp(database: database));
+  runApp(MyApp(database: db));
 }
 
 class MyApp extends StatelessWidget {
