@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project/database/DatabaseInstance.dart';
 import 'package:project/database/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final db = AppDatabase();
 
   await db.into(db.todoItems).insert(
     TodoItemsCompanion.insert(
