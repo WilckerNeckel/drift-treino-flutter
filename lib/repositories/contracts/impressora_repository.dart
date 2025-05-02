@@ -1,4 +1,5 @@
 class Impressora {
+  final String id;
   final String nome;
   final String modelo;
   final bool ativo;
@@ -8,6 +9,7 @@ class Impressora {
   final String tipoImpressao;
 
   Impressora({
+    required this.id,
     required this.nome,
     required this.modelo,
     required this.ativo,
