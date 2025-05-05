@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:project/application/impressora_data_provider.dart';
 import 'package:project/database/DatabaseInstance.dart';
 import 'package:project/database/database.dart';
-import 'package:project/entities/impressora.dart';
+import 'package:project/entities/impressora/impressora.dart';
 import 'package:project/repositories/impressora_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final impressoraDataProvider =
-      ImpressoraDataProvider(ImpressoraDriftRepository());
+      ImpressoraDataProvider(ImpressoraDriftRepository(db));
 
-  await impressoraDataProvider.create(ImpressoraObj(
-      nome: "Cuzinho",
+  // final impresora = await impressoraDataProvider.getByIdentifier("CozinhaAntiga");
+  // final newImpressora = impresora.copyWith(nome: "CozinhaMuitoAntiga");
+
+  // await impressoraDataProvider.update(newImpressora);
+  await impressoraDataProvider.create(ImpressoraObj.create(
+      nome: "Cozinha",
       modelo: "Bematec",
       ativo: true,
       tipoConexao: "tcp/ip",
@@ -56,7 +60,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final impressoraDataProvider =
-      ImpressoraDataProvider(ImpressoraDriftRepository());
+      ImpressoraDataProvider(ImpressoraDriftRepository(db));
 
   Future<List<ImpressoraObj>> _fetchItems() {
     return impressoraDataProvider.getAll();

@@ -1,4 +1,4 @@
-import 'package:project/entities/impressora.dart';
+import 'package:project/entities/impressora/impressora.dart';
 import 'package:project/repositories/contracts/impressora_repository_contract.dart';
 
 class ImpressoraDataProvider {
