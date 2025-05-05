@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:project/application/impressora_data_provider.dart';
 import 'package:project/database/DatabaseInstance.dart';
 import 'package:project/database/database.dart';
+import 'package:project/entities/impressora.dart';
+import 'package:project/repositories/impressora_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await db.into(db.todoItems).insert(
-    TodoItemsCompanion.insert(
-      title: 'todo: finish drift setup',
-      content: 'Mudando messagem ',
-    ),
-  );
+  final impressoraDataProvider =
+      ImpressoraDataProvider(ImpressoraDriftRepository());
+
+  await impressoraDataProvider.create(ImpressoraObj(
+      nome: "Cuzinho",
+      modelo: "Bematec",
+      ativo: true,
+      tipoConexao: "tcp/ip",
+      ip: "192.168.1.250",
+      porta: "91000",
+      tipoImpressao: "comanda"));
 
   runApp(MyApp(database: db));
 }
@@ -47,8 +55,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<List<TodoItem>> _fetchItems() {
-    return widget.database.select(widget.database.todoItems).get();
+  final impressoraDataProvider =
+      ImpressoraDataProvider(ImpressoraDriftRepository());
+
+  Future<List<ImpressoraObj>> _fetchItems() {
+    return impressoraDataProvider.getAll();
   }
 
   @override
@@ -58,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Center(child: Text(widget.title)),
       ),
-      body: FutureBuilder<List<TodoItem>>(
+      body: FutureBuilder<List<ImpressoraObj>>(
         future: _fetchItems(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -77,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
-                  client.content,
+                  client.nome,
                   style: const TextStyle(fontSize: 16),
                 ),
               );

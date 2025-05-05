@@ -1,5 +1,5 @@
 class ImpressoraObj {
-    final String id;
+    final String? id;
     final String nome;
     final String modelo;
     final bool ativo;
@@ -9,7 +9,7 @@ class ImpressoraObj {
     final String tipoImpressao;
   
     ImpressoraObj({
-      required this.id,
+      this.id,
       required this.nome,
       required this.modelo,
       required this.ativo,

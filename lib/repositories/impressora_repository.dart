@@ -63,7 +63,7 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
   @override
   Future<ImpressoraObj> updateImpressora(ImpressoraObj impressoraInput) async {
     final rowsUpdated = await (db.update(db.impressora)
-          ..where((i) => i.id.equals(impressoraInput.id)))
+          ..where((i) => i.id.equals(impressoraInput.id!)))
         .write(ImpressoraCompanion(
       nome: Value(impressoraInput.nome),
       modelo: Value(impressoraInput.modelo),
