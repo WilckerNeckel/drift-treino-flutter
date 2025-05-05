@@ -1,24 +1,17 @@
-import 'package:project/database/DatabaseInstance.dart';
 import 'package:project/database/database.dart';
-import 'package:project/entities/impressora.dart';
+import 'package:project/entities/impressora/impressora.dart';
 import 'package:project/repositories/contracts/impressora_repository_contract.dart';
 import 'package:drift/drift.dart';
 
 class ImpressoraDriftRepository implements IImpressoraRepository {
+  final AppDatabase db;
+  ImpressoraDriftRepository(this.db);
+  
   @override
   Future<List<ImpressoraObj>> findManyImpressoras() async {
     final impressoras = await db.managers.impressora.get();
     final impressoraInstances = impressoras.map((row) {
-      return ImpressoraObj(
-        id: row.id,
-        nome: row.nome,
-        modelo: row.modelo,
-        ativo: row.ativo,
-        tipoConexao: row.tipoConexao,
-        ip: row.ip,
-        porta: row.porta,
-        tipoImpressao: row.tipoImpressao,
-      );
+      return ImpressoraObj.fromDatabase(row.toJson());
     }).toList();
     return impressoraInstances;
   }
@@ -33,17 +26,7 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
     if (impressoraData == null) {
       throw Exception('Impressora not found');
     }
-
-    return ImpressoraObj(
-      id: impressoraData.id,
-      nome: impressoraData.nome,
-      modelo: impressoraData.modelo,
-      ativo: impressoraData.ativo,
-      tipoConexao: impressoraData.tipoConexao,
-      ip: impressoraData.ip,
-      porta: impressoraData.porta,
-      tipoImpressao: impressoraData.tipoImpressao,
-    );
+    return ImpressoraObj.fromDatabase(impressoraData.toJson());
   }
 
   @override
@@ -52,6 +35,7 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
         ImpressoraCompanion.insert(
             nome: impressoraInput.nome,
             modelo: impressoraInput.modelo,
+            ativo: Value(impressoraInput.ativo), // <-- FIXED
             tipoConexao: impressoraInput.tipoConexao,
             ip: impressoraInput.ip,
             porta: impressoraInput.porta,
@@ -78,6 +62,6 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
       throw Exception('Failed to update Impressora');
     }
 
-    return impressoraInput;
+    return await getImpressoraByIdentifier(impressoraInput.id!);
   }
 }
