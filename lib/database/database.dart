@@ -35,6 +35,15 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 2;
 
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) => m.createAll(), // used on first install
+        onUpgrade: (m, from, to) async {
+          await m
+              .createAll(); // <== Let Drift auto-create missing tables/columns
+        },
+      );
+
   static QueryExecutor _openConnection() {
     return driftDatabase(
       name: 'my_database',
