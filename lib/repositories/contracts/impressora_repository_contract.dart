@@ -1,5 +1,5 @@
 
-import 'package:project/entities/impressora.dart';
+import 'package:project/entities/impressora/impressora.dart';
 
 abstract class IImpressoraRepository {
   Future<List<ImpressoraObj>> findManyImpressoras();
