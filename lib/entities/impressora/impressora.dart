@@ -1,18 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 part 'impressora.freezed.dart';
+
 @freezed
 class ImpressoraObj with _$ImpressoraObj {
-  const factory ImpressoraObj._({
-    String? id,
-    required String nome,
-    required String modelo,
-    required bool ativo,
-    required String tipoConexao,
-    required String ip,
-    required String porta,
-    required String tipoImpressao,
-  }) = _ImpressoraObj;
+  const factory ImpressoraObj._(
+      {String? id,
+      required String nome,
+      required String modelo,
+      required bool ativo,
+      required String tipoConexao,
+      required String ip,
+      required String porta,
+      required String tipoImpressao,
+      required String empresaId
+      }) = _ImpressoraObj;
 
   factory ImpressoraObj.fromDatabase(Map<String, dynamic> map) {
     return ImpressoraObj._(
@@ -24,6 +25,7 @@ class ImpressoraObj with _$ImpressoraObj {
       ip: map['ip'] as String,
       porta: map['porta'] as String,
       tipoImpressao: map['tipoImpressao'] as String,
+      empresaId: map['empresaId'] as String,
     );
   }
 
@@ -36,6 +38,7 @@ class ImpressoraObj with _$ImpressoraObj {
     required String ip,
     required String porta,
     required String tipoImpressao,
+    required String empresaId
   }) {
     if (nome.trim().isEmpty) throw ArgumentError('Nome é obrigatório');
     if (modelo.trim().isEmpty) throw ArgumentError('Modelo é obrigatório');
@@ -55,6 +58,7 @@ class ImpressoraObj with _$ImpressoraObj {
       ip: ip,
       porta: porta,
       tipoImpressao: tipoImpressao,
+      empresaId: empresaId,
     );
   }
 }
