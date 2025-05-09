@@ -339,9 +339,24 @@ class $ImpressoraTable extends Impressora
           GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 20),
       type: DriftSqlType.string,
       requiredDuringInsert: true);
+  static const VerificationMeta _empresaIdMeta =
+      const VerificationMeta('empresaId');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, nome, modelo, ativo, tipoConexao, ip, porta, tipoImpressao];
+  late final GeneratedColumn<String> empresaId = GeneratedColumn<String>(
+      'empresa_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        nome,
+        modelo,
+        ativo,
+        tipoConexao,
+        ip,
+        porta,
+        tipoImpressao,
+        empresaId
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -398,6 +413,12 @@ class $ImpressoraTable extends Impressora
     } else if (isInserting) {
       context.missing(_tipoImpressaoMeta);
     }
+    if (data.containsKey('empresa_id')) {
+      context.handle(_empresaIdMeta,
+          empresaId.isAcceptableOrUnknown(data['empresa_id']!, _empresaIdMeta));
+    } else if (isInserting) {
+      context.missing(_empresaIdMeta);
+    }
     return context;
   }
 
@@ -423,6 +444,8 @@ class $ImpressoraTable extends Impressora
           .read(DriftSqlType.string, data['${effectivePrefix}porta'])!,
       tipoImpressao: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tipo_impressao'])!,
+      empresaId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}empresa_id'])!,
     );
   }
 
@@ -441,6 +464,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
   final String ip;
   final String porta;
   final String tipoImpressao;
+  final String empresaId;
   const ImpressoraData(
       {required this.id,
       required this.nome,
@@ -449,7 +473,8 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       required this.tipoConexao,
       required this.ip,
       required this.porta,
-      required this.tipoImpressao});
+      required this.tipoImpressao,
+      required this.empresaId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -461,6 +486,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
     map['ip'] = Variable<String>(ip);
     map['porta'] = Variable<String>(porta);
     map['tipo_impressao'] = Variable<String>(tipoImpressao);
+    map['empresa_id'] = Variable<String>(empresaId);
     return map;
   }
 
@@ -474,6 +500,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       ip: Value(ip),
       porta: Value(porta),
       tipoImpressao: Value(tipoImpressao),
+      empresaId: Value(empresaId),
     );
   }
 
@@ -489,6 +516,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       ip: serializer.fromJson<String>(json['ip']),
       porta: serializer.fromJson<String>(json['porta']),
       tipoImpressao: serializer.fromJson<String>(json['tipoImpressao']),
+      empresaId: serializer.fromJson<String>(json['empresaId']),
     );
   }
   @override
@@ -503,6 +531,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       'ip': serializer.toJson<String>(ip),
       'porta': serializer.toJson<String>(porta),
       'tipoImpressao': serializer.toJson<String>(tipoImpressao),
+      'empresaId': serializer.toJson<String>(empresaId),
     };
   }
 
@@ -514,7 +543,8 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
           String? tipoConexao,
           String? ip,
           String? porta,
-          String? tipoImpressao}) =>
+          String? tipoImpressao,
+          String? empresaId}) =>
       ImpressoraData(
         id: id ?? this.id,
         nome: nome ?? this.nome,
@@ -524,6 +554,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
         ip: ip ?? this.ip,
         porta: porta ?? this.porta,
         tipoImpressao: tipoImpressao ?? this.tipoImpressao,
+        empresaId: empresaId ?? this.empresaId,
       );
   ImpressoraData copyWithCompanion(ImpressoraCompanion data) {
     return ImpressoraData(
@@ -538,6 +569,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       tipoImpressao: data.tipoImpressao.present
           ? data.tipoImpressao.value
           : this.tipoImpressao,
+      empresaId: data.empresaId.present ? data.empresaId.value : this.empresaId,
     );
   }
 
@@ -551,14 +583,15 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
           ..write('tipoConexao: $tipoConexao, ')
           ..write('ip: $ip, ')
           ..write('porta: $porta, ')
-          ..write('tipoImpressao: $tipoImpressao')
+          ..write('tipoImpressao: $tipoImpressao, ')
+          ..write('empresaId: $empresaId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, nome, modelo, ativo, tipoConexao, ip, porta, tipoImpressao);
+  int get hashCode => Object.hash(id, nome, modelo, ativo, tipoConexao, ip,
+      porta, tipoImpressao, empresaId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -570,7 +603,8 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
           other.tipoConexao == this.tipoConexao &&
           other.ip == this.ip &&
           other.porta == this.porta &&
-          other.tipoImpressao == this.tipoImpressao);
+          other.tipoImpressao == this.tipoImpressao &&
+          other.empresaId == this.empresaId);
 }
 
 class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
@@ -582,6 +616,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
   final Value<String> ip;
   final Value<String> porta;
   final Value<String> tipoImpressao;
+  final Value<String> empresaId;
   final Value<int> rowid;
   const ImpressoraCompanion({
     this.id = const Value.absent(),
@@ -592,6 +627,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
     this.ip = const Value.absent(),
     this.porta = const Value.absent(),
     this.tipoImpressao = const Value.absent(),
+    this.empresaId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ImpressoraCompanion.insert({
@@ -603,13 +639,15 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
     required String ip,
     required String porta,
     required String tipoImpressao,
+    required String empresaId,
     this.rowid = const Value.absent(),
   })  : nome = Value(nome),
         modelo = Value(modelo),
         tipoConexao = Value(tipoConexao),
         ip = Value(ip),
         porta = Value(porta),
-        tipoImpressao = Value(tipoImpressao);
+        tipoImpressao = Value(tipoImpressao),
+        empresaId = Value(empresaId);
   static Insertable<ImpressoraData> custom({
     Expression<String>? id,
     Expression<String>? nome,
@@ -619,6 +657,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
     Expression<String>? ip,
     Expression<String>? porta,
     Expression<String>? tipoImpressao,
+    Expression<String>? empresaId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -630,6 +669,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
       if (ip != null) 'ip': ip,
       if (porta != null) 'porta': porta,
       if (tipoImpressao != null) 'tipo_impressao': tipoImpressao,
+      if (empresaId != null) 'empresa_id': empresaId,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -643,6 +683,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
       Value<String>? ip,
       Value<String>? porta,
       Value<String>? tipoImpressao,
+      Value<String>? empresaId,
       Value<int>? rowid}) {
     return ImpressoraCompanion(
       id: id ?? this.id,
@@ -653,6 +694,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
       ip: ip ?? this.ip,
       porta: porta ?? this.porta,
       tipoImpressao: tipoImpressao ?? this.tipoImpressao,
+      empresaId: empresaId ?? this.empresaId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -684,6 +726,9 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
     if (tipoImpressao.present) {
       map['tipo_impressao'] = Variable<String>(tipoImpressao.value);
     }
+    if (empresaId.present) {
+      map['empresa_id'] = Variable<String>(empresaId.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -701,6 +746,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
           ..write('ip: $ip, ')
           ..write('porta: $porta, ')
           ..write('tipoImpressao: $tipoImpressao, ')
+          ..write('empresaId: $empresaId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -872,6 +918,7 @@ typedef $$ImpressoraTableCreateCompanionBuilder = ImpressoraCompanion Function({
   required String ip,
   required String porta,
   required String tipoImpressao,
+  required String empresaId,
   Value<int> rowid,
 });
 typedef $$ImpressoraTableUpdateCompanionBuilder = ImpressoraCompanion Function({
@@ -883,6 +930,7 @@ typedef $$ImpressoraTableUpdateCompanionBuilder = ImpressoraCompanion Function({
   Value<String> ip,
   Value<String> porta,
   Value<String> tipoImpressao,
+  Value<String> empresaId,
   Value<int> rowid,
 });
 
@@ -918,6 +966,9 @@ class $$ImpressoraTableFilterComposer
 
   ColumnFilters<String> get tipoImpressao => $composableBuilder(
       column: $table.tipoImpressao, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get empresaId => $composableBuilder(
+      column: $table.empresaId, builder: (column) => ColumnFilters(column));
 }
 
 class $$ImpressoraTableOrderingComposer
@@ -953,6 +1004,9 @@ class $$ImpressoraTableOrderingComposer
   ColumnOrderings<String> get tipoImpressao => $composableBuilder(
       column: $table.tipoImpressao,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get empresaId => $composableBuilder(
+      column: $table.empresaId, builder: (column) => ColumnOrderings(column));
 }
 
 class $$ImpressoraTableAnnotationComposer
@@ -987,6 +1041,9 @@ class $$ImpressoraTableAnnotationComposer
 
   GeneratedColumn<String> get tipoImpressao => $composableBuilder(
       column: $table.tipoImpressao, builder: (column) => column);
+
+  GeneratedColumn<String> get empresaId =>
+      $composableBuilder(column: $table.empresaId, builder: (column) => column);
 }
 
 class $$ImpressoraTableTableManager extends RootTableManager<
@@ -1023,6 +1080,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             Value<String> ip = const Value.absent(),
             Value<String> porta = const Value.absent(),
             Value<String> tipoImpressao = const Value.absent(),
+            Value<String> empresaId = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               ImpressoraCompanion(
@@ -1034,6 +1092,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             ip: ip,
             porta: porta,
             tipoImpressao: tipoImpressao,
+            empresaId: empresaId,
             rowid: rowid,
           ),
           createCompanionCallback: ({
@@ -1045,6 +1104,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             required String ip,
             required String porta,
             required String tipoImpressao,
+            required String empresaId,
             Value<int> rowid = const Value.absent(),
           }) =>
               ImpressoraCompanion.insert(
@@ -1056,6 +1116,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             ip: ip,
             porta: porta,
             tipoImpressao: tipoImpressao,
+            empresaId: empresaId,
             rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0

@@ -2,7 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:drift_sqlite_async/drift_sqlite_async.dart'; // Drift + sqlite_async integration
+import 'package:sqlite_async/sqlite_async.dart'; // SQLite async library
 part 'database.g.dart';
 
 // tutorial table
@@ -23,6 +24,7 @@ class Impressora extends Table {
   TextColumn get ip => text().withLength(min: 1, max: 20)();
   TextColumn get porta => text().withLength(min: 1, max: 20)();
   TextColumn get tipoImpressao => text().withLength(min: 1, max: 20)();
+  TextColumn get empresaId => text()();
 }
 
 @DriftDatabase(tables: [TodoItems, Impressora])
@@ -30,8 +32,8 @@ class AppDatabase extends _$AppDatabase {
   // After generating code, this class needs to define a `schemaVersion` getter
   // and a constructor telling drift where the database should be stored.
   // These are described in the getting started guide: https://drift.simonbinder.eu/setup/
-  AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
-
+  AppDatabase(SqliteConnection connection)
+      : super(SqliteAsyncDriftConnection(connection));
   @override
   int get schemaVersion => 2;
 
