@@ -25,6 +25,7 @@ mixin _$ImpressoraObj {
   String get porta => throw _privateConstructorUsedError;
   String get tipoImpressao => throw _privateConstructorUsedError;
   String get empresaId => throw _privateConstructorUsedError;
+  String get dataCriacao => throw _privateConstructorUsedError;
 
   /// Create a copy of ImpressoraObj
   /// with the given fields replaced by the non-null parameter values.
@@ -48,7 +49,8 @@ abstract class $ImpressoraObjCopyWith<$Res> {
       String ip,
       String porta,
       String tipoImpressao,
-      String empresaId});
+      String empresaId,
+      String dataCriacao});
 }
 
 /// @nodoc
@@ -75,6 +77,7 @@ class _$ImpressoraObjCopyWithImpl<$Res, $Val extends ImpressoraObj>
     Object? porta = null,
     Object? tipoImpressao = null,
     Object? empresaId = null,
+    Object? dataCriacao = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -113,6 +116,10 @@ class _$ImpressoraObjCopyWithImpl<$Res, $Val extends ImpressoraObj>
           ? _value.empresaId
           : empresaId // ignore: cast_nullable_to_non_nullable
               as String,
+      dataCriacao: null == dataCriacao
+          ? _value.dataCriacao
+          : dataCriacao // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -134,7 +141,8 @@ abstract class _$$ImpressoraObjImplCopyWith<$Res>
       String ip,
       String porta,
       String tipoImpressao,
-      String empresaId});
+      String empresaId,
+      String dataCriacao});
 }
 
 /// @nodoc
@@ -159,6 +167,7 @@ class __$$ImpressoraObjImplCopyWithImpl<$Res>
     Object? porta = null,
     Object? tipoImpressao = null,
     Object? empresaId = null,
+    Object? dataCriacao = null,
   }) {
     return _then(_$ImpressoraObjImpl(
       id: freezed == id
@@ -197,6 +206,10 @@ class __$$ImpressoraObjImplCopyWithImpl<$Res>
           ? _value.empresaId
           : empresaId // ignore: cast_nullable_to_non_nullable
               as String,
+      dataCriacao: null == dataCriacao
+          ? _value.dataCriacao
+          : dataCriacao // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -213,7 +226,8 @@ class _$ImpressoraObjImpl implements _ImpressoraObj {
       required this.ip,
       required this.porta,
       required this.tipoImpressao,
-      required this.empresaId});
+      required this.empresaId,
+      required this.dataCriacao});
 
   @override
   final String? id;
@@ -233,10 +247,12 @@ class _$ImpressoraObjImpl implements _ImpressoraObj {
   final String tipoImpressao;
   @override
   final String empresaId;
+  @override
+  final String dataCriacao;
 
   @override
   String toString() {
-    return 'ImpressoraObj._(id: $id, nome: $nome, modelo: $modelo, ativo: $ativo, tipoConexao: $tipoConexao, ip: $ip, porta: $porta, tipoImpressao: $tipoImpressao, empresaId: $empresaId)';
+    return 'ImpressoraObj._(id: $id, nome: $nome, modelo: $modelo, ativo: $ativo, tipoConexao: $tipoConexao, ip: $ip, porta: $porta, tipoImpressao: $tipoImpressao, empresaId: $empresaId, dataCriacao: $dataCriacao)';
   }
 
   @override
@@ -255,12 +271,14 @@ class _$ImpressoraObjImpl implements _ImpressoraObj {
             (identical(other.tipoImpressao, tipoImpressao) ||
                 other.tipoImpressao == tipoImpressao) &&
             (identical(other.empresaId, empresaId) ||
-                other.empresaId == empresaId));
+                other.empresaId == empresaId) &&
+            (identical(other.dataCriacao, dataCriacao) ||
+                other.dataCriacao == dataCriacao));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id, nome, modelo, ativo,
-      tipoConexao, ip, porta, tipoImpressao, empresaId);
+      tipoConexao, ip, porta, tipoImpressao, empresaId, dataCriacao);
 
   /// Create a copy of ImpressoraObj
   /// with the given fields replaced by the non-null parameter values.
@@ -281,7 +299,8 @@ abstract class _ImpressoraObj implements ImpressoraObj {
       required final String ip,
       required final String porta,
       required final String tipoImpressao,
-      required final String empresaId}) = _$ImpressoraObjImpl;
+      required final String empresaId,
+      required final String dataCriacao}) = _$ImpressoraObjImpl;
 
   @override
   String? get id;
@@ -301,6 +320,8 @@ abstract class _ImpressoraObj implements ImpressoraObj {
   String get tipoImpressao;
   @override
   String get empresaId;
+  @override
+  String get dataCriacao;
 
   /// Create a copy of ImpressoraObj
   /// with the given fields replaced by the non-null parameter values.
