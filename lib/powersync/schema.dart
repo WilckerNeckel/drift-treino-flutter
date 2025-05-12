@@ -1,8 +1,7 @@
 import 'package:powersync/powersync.dart';
 
-const schema = Schema(([
+final schema = Schema([
   Table('impressora', [
-    Column.text('id'),
     Column.text('nome'),
     Column.text('modelo'),
     Column.integer('ativo'),
@@ -11,6 +10,6 @@ const schema = Schema(([
     Column.text('porta'),
     Column.text('tipo_impressao'),
     Column.text('empresa_id'),
-    Column.text('data_criacao'),
+    Column.text('data_criacao'), // Changed to Column.text
   ])
-]));
+]);
