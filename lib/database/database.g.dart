@@ -348,11 +348,11 @@ class $ImpressoraTable extends Impressora
   static const VerificationMeta _dataCriacaoMeta =
       const VerificationMeta('dataCriacao');
   @override
-  late final GeneratedColumn<DateTime> dataCriacao = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> dataCriacao = GeneratedColumn<String>(
       'data_criacao', aliasedName, false,
-      type: DriftSqlType.dateTime,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
-      clientDefault: () => DateTime.now());
+      clientDefault: () => DateTime.now().toIso8601String());
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -462,7 +462,7 @@ class $ImpressoraTable extends Impressora
       empresaId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}empresa_id'])!,
       dataCriacao: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}data_criacao'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}data_criacao'])!,
     );
   }
 
@@ -482,7 +482,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
   final String porta;
   final String tipoImpressao;
   final String empresaId;
-  final DateTime dataCriacao;
+  final String dataCriacao;
   const ImpressoraData(
       {required this.id,
       required this.nome,
@@ -506,7 +506,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
     map['porta'] = Variable<String>(porta);
     map['tipo_impressao'] = Variable<String>(tipoImpressao);
     map['empresa_id'] = Variable<String>(empresaId);
-    map['data_criacao'] = Variable<DateTime>(dataCriacao);
+    map['data_criacao'] = Variable<String>(dataCriacao);
     return map;
   }
 
@@ -538,7 +538,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       porta: serializer.fromJson<String>(json['porta']),
       tipoImpressao: serializer.fromJson<String>(json['tipoImpressao']),
       empresaId: serializer.fromJson<String>(json['empresaId']),
-      dataCriacao: serializer.fromJson<DateTime>(json['dataCriacao']),
+      dataCriacao: serializer.fromJson<String>(json['dataCriacao']),
     );
   }
   @override
@@ -554,7 +554,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
       'porta': serializer.toJson<String>(porta),
       'tipoImpressao': serializer.toJson<String>(tipoImpressao),
       'empresaId': serializer.toJson<String>(empresaId),
-      'dataCriacao': serializer.toJson<DateTime>(dataCriacao),
+      'dataCriacao': serializer.toJson<String>(dataCriacao),
     };
   }
 
@@ -568,7 +568,7 @@ class ImpressoraData extends DataClass implements Insertable<ImpressoraData> {
           String? porta,
           String? tipoImpressao,
           String? empresaId,
-          DateTime? dataCriacao}) =>
+          String? dataCriacao}) =>
       ImpressoraData(
         id: id ?? this.id,
         nome: nome ?? this.nome,
@@ -646,7 +646,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
   final Value<String> porta;
   final Value<String> tipoImpressao;
   final Value<String> empresaId;
-  final Value<DateTime> dataCriacao;
+  final Value<String> dataCriacao;
   final Value<int> rowid;
   const ImpressoraCompanion({
     this.id = const Value.absent(),
@@ -690,7 +690,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
     Expression<String>? porta,
     Expression<String>? tipoImpressao,
     Expression<String>? empresaId,
-    Expression<DateTime>? dataCriacao,
+    Expression<String>? dataCriacao,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -718,7 +718,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
       Value<String>? porta,
       Value<String>? tipoImpressao,
       Value<String>? empresaId,
-      Value<DateTime>? dataCriacao,
+      Value<String>? dataCriacao,
       Value<int>? rowid}) {
     return ImpressoraCompanion(
       id: id ?? this.id,
@@ -766,7 +766,7 @@ class ImpressoraCompanion extends UpdateCompanion<ImpressoraData> {
       map['empresa_id'] = Variable<String>(empresaId.value);
     }
     if (dataCriacao.present) {
-      map['data_criacao'] = Variable<DateTime>(dataCriacao.value);
+      map['data_criacao'] = Variable<String>(dataCriacao.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -959,7 +959,7 @@ typedef $$ImpressoraTableCreateCompanionBuilder = ImpressoraCompanion Function({
   required String porta,
   required String tipoImpressao,
   required String empresaId,
-  Value<DateTime> dataCriacao,
+  Value<String> dataCriacao,
   Value<int> rowid,
 });
 typedef $$ImpressoraTableUpdateCompanionBuilder = ImpressoraCompanion Function({
@@ -972,7 +972,7 @@ typedef $$ImpressoraTableUpdateCompanionBuilder = ImpressoraCompanion Function({
   Value<String> porta,
   Value<String> tipoImpressao,
   Value<String> empresaId,
-  Value<DateTime> dataCriacao,
+  Value<String> dataCriacao,
   Value<int> rowid,
 });
 
@@ -1012,7 +1012,7 @@ class $$ImpressoraTableFilterComposer
   ColumnFilters<String> get empresaId => $composableBuilder(
       column: $table.empresaId, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get dataCriacao => $composableBuilder(
+  ColumnFilters<String> get dataCriacao => $composableBuilder(
       column: $table.dataCriacao, builder: (column) => ColumnFilters(column));
 }
 
@@ -1053,7 +1053,7 @@ class $$ImpressoraTableOrderingComposer
   ColumnOrderings<String> get empresaId => $composableBuilder(
       column: $table.empresaId, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get dataCriacao => $composableBuilder(
+  ColumnOrderings<String> get dataCriacao => $composableBuilder(
       column: $table.dataCriacao, builder: (column) => ColumnOrderings(column));
 }
 
@@ -1093,7 +1093,7 @@ class $$ImpressoraTableAnnotationComposer
   GeneratedColumn<String> get empresaId =>
       $composableBuilder(column: $table.empresaId, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get dataCriacao => $composableBuilder(
+  GeneratedColumn<String> get dataCriacao => $composableBuilder(
       column: $table.dataCriacao, builder: (column) => column);
 }
 
@@ -1132,7 +1132,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             Value<String> porta = const Value.absent(),
             Value<String> tipoImpressao = const Value.absent(),
             Value<String> empresaId = const Value.absent(),
-            Value<DateTime> dataCriacao = const Value.absent(),
+            Value<String> dataCriacao = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               ImpressoraCompanion(
@@ -1158,7 +1158,7 @@ class $$ImpressoraTableTableManager extends RootTableManager<
             required String porta,
             required String tipoImpressao,
             required String empresaId,
-            Value<DateTime> dataCriacao = const Value.absent(),
+            Value<String> dataCriacao = const Value.absent(),
             Value<int> rowid = const Value.absent(),
           }) =>
               ImpressoraCompanion.insert(

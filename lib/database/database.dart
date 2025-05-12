@@ -25,7 +25,8 @@ class Impressora extends Table {
   TextColumn get porta => text().withLength(min: 1, max: 20)();
   TextColumn get tipoImpressao => text().withLength(min: 1, max: 20)();
   TextColumn get empresaId => text()();
-  DateTimeColumn get dataCriacao => dateTime().clientDefault(() => DateTime.now())();
+  TextColumn get dataCriacao =>
+      text().clientDefault(() => DateTime.now().toIso8601String())();
 }
 
 @DriftDatabase(tables: [TodoItems, Impressora])
@@ -33,14 +34,13 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(SqliteConnection connection)
       : super(SqliteAsyncDriftConnection(connection));
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) => m.createAll(),
         onUpgrade: (m, from, to) async {
-          await m
-              .createAll();
+          await m.createAll();
         },
       );
 
