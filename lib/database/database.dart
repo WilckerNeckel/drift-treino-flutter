@@ -25,24 +25,22 @@ class Impressora extends Table {
   TextColumn get porta => text().withLength(min: 1, max: 20)();
   TextColumn get tipoImpressao => text().withLength(min: 1, max: 20)();
   TextColumn get empresaId => text()();
+  DateTimeColumn get dataCriacao => dateTime().clientDefault(() => DateTime.now())();
 }
 
 @DriftDatabase(tables: [TodoItems, Impressora])
 class AppDatabase extends _$AppDatabase {
-  // After generating code, this class needs to define a `schemaVersion` getter
-  // and a constructor telling drift where the database should be stored.
-  // These are described in the getting started guide: https://drift.simonbinder.eu/setup/
   AppDatabase(SqliteConnection connection)
       : super(SqliteAsyncDriftConnection(connection));
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) => m.createAll(), // used on first install
+        onCreate: (m) => m.createAll(),
         onUpgrade: (m, from, to) async {
           await m
-              .createAll(); // <== Let Drift auto-create missing tables/columns
+              .createAll();
         },
       );
 
@@ -50,11 +48,8 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(
       name: 'my_database',
       native: const DriftNativeOptions(
-        // By default, `driftDatabase` from `package:drift_flutter` stores the
-        // database files in `getApplicationDocumentsDirectory()`.
         databaseDirectory: getApplicationSupportDirectory,
       ),
-      // If you need web support, see https://drift.simonbinder.eu/platforms/web/
     );
   }
 }
