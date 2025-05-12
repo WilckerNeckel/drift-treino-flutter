@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  freezed_annotation: ^3.0.0
+  freezed_annotation: ^2.2.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,8 +56,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
   drift_dev: ^2.23.1
-  build_runner: ^2.4.13
-  freezed: ^3.0.0-0.0.dev
+  build_runner: ^2.4.0
+  freezed: ^2.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
