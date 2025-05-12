@@ -6,4 +6,5 @@ abstract class IImpressoraRepository {
   Future<ImpressoraObj> getImpressoraByIdentifier(String indentifier);
   Future<int> createImpressora(ImpressoraObj impressora);
   Future<ImpressoraObj> updateImpressora(ImpressoraObj impressora);
+  Future<void> deleteImpressoraByIdentifier(String identifier);
 }
