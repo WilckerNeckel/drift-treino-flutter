@@ -2,11 +2,12 @@ import 'package:project/database/database.dart';
 import 'package:project/entities/impressora/impressora.dart';
 import 'package:project/repositories/contracts/impressora_repository_contract.dart';
 import 'package:drift/drift.dart';
+// import 'package:uuid/uuid.dart';
 
 class ImpressoraDriftRepository implements IImpressoraRepository {
   final AppDatabase db;
   ImpressoraDriftRepository(this.db);
-  
+
   @override
   Future<List<ImpressoraObj>> findManyImpressoras() async {
     final impressoras = await db.managers.impressora.get();
@@ -31,16 +32,17 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
 
   @override
   Future<int> createImpressora(ImpressoraObj impressoraInput) async {
-    final impressoraData = await db.into(db.impressora).insert(
-        ImpressoraCompanion.insert(
-            nome: impressoraInput.nome,
-            modelo: impressoraInput.modelo,
-            ativo: Value(impressoraInput.ativo), // <-- FIXED
-            tipoConexao: impressoraInput.tipoConexao,
-            ip: impressoraInput.ip,
-            porta: impressoraInput.porta,
-            tipoImpressao: impressoraInput.tipoImpressao,
-            empresaId: impressoraInput.empresaId,
+    final impressoraData =
+        await db.into(db.impressora).insert(ImpressoraCompanion.insert(
+              // id: Value(impressoraInput.id ?? const Uuid().v4()),
+              nome: impressoraInput.nome,
+              modelo: impressoraInput.modelo,
+              ativo: Value(impressoraInput.ativo), // <-- FIXED
+              tipoConexao: impressoraInput.tipoConexao,
+              ip: impressoraInput.ip,
+              porta: impressoraInput.porta,
+              tipoImpressao: impressoraInput.tipoImpressao,
+              empresaId: impressoraInput.empresaId,
             ));
 
     return impressoraData;
@@ -65,5 +67,16 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
     }
 
     return await getImpressoraByIdentifier(impressoraInput.id!);
+  }
+
+  @override
+  Future<void> deleteImpressoraByIdentifier(String identifier) async {
+    final query = db.delete(db.impressora)
+      ..where((tbl) => tbl.id.equals(identifier));
+    final deletedCount = await query.go();
+
+    if (deletedCount == 0) {
+      throw Exception('Impressora not found or already deleted');
+    }
   }
 }
