@@ -39,7 +39,9 @@ class ImpressoraDriftRepository implements IImpressoraRepository {
             tipoConexao: impressoraInput.tipoConexao,
             ip: impressoraInput.ip,
             porta: impressoraInput.porta,
-            tipoImpressao: impressoraInput.tipoImpressao));
+            tipoImpressao: impressoraInput.tipoImpressao,
+            empresaId: impressoraInput.empresaId,
+            ));
 
     return impressoraData;
   }
