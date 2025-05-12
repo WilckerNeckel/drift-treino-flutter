@@ -7,17 +7,19 @@ class MyBackendConnector extends PowerSyncBackendConnector {
 
   MyBackendConnector(this.db);
   final authToken =
-      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbTlsZjAxbTIwMDAwb2tranhicmIxbGZjIiwiZW1wcmVzYUlkIjoiMSIsImtpZCI6InBvd2Vyc3luYy01ZjY5OWEyMWY0IiwiYXVkIjoicG93ZXItc2luYyIsImlhdCI6MTc0NzA3MjU1MCwiZXhwIjoxNzQ3MDc2MTUwfQ.aU9TwvXzTvuArkrTY0BRDpp9_4yiCSyd0RF4xQFbenWxE-uaBXeIlumotlMthUtuLz_0mBAPClMA2yzH4WzRhq5k4AjiSyLOXAhbwEp1HCnH173Mrxgj3gR4q1xHrKscoCKQkqZmLN8F0Uk0ZesbVcGRaBe7gYRw8T5uV_BmXaQSI7iHKX0zUUmNbx8-KeBjWdMtNXkzE-pgvIfVV2C_RLckOWuiihyMkRF3t5Dd1VRap2_Js08KVW5sOtdBYdPIPJELYHcn9KkiZcjD7QqKuMaYBra470kqTeHOMyA6nu-KbG3vnQ0u5SKIYoeCW-z9An55v5DbWAcTqIB-ZGduZA";
+      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InBvd2Vyc3luYy0xMjMifQ.eyJzdWIiOiJjbTlsZjAxbTIwMDAwb2tranhicmIxbGZjIiwiZW1wcmVzYUlkIjoiMSIsImtpZCI6InBvd2Vyc3luYy0xMjMiLCJhdWQiOiJwb3dlcnN5bmMiLCJpYXQiOjE3NDcwODgyMDcsImV4cCI6MTc0NzA5MTgwN30.jD2daBADWU4vXEJbAdtZsvCjjsg7yLmXVXELmOJr9Xv60dG3IMZ-wTzFtKAzxj9Trn6qag2O1WjzNwHEr0IE1Ejmgy8gGxgAHN5luViH3gn8wLtCTd2Lp8sXN_V0qpKF6FenPKUtrlS7uWPjcV4RP4YqcFoLyl8RFuJ9cw9TXYfjH-LhAEeaLf2upDQegdYkvn8sPLezAZHIwoy2YlSmh8SDtY58riicdtxTV9wsMsxPVQJ3-40ygl0GPZG_oGKUHF5Bb58NB3uC2VFgTBWpQG_HeirqDUa2G7WFcZ2rQ1DCWV0iJR1d6ojdZDxWeI_2OZRy_Aawh-_PV7ywzW3w1w";
 
   @override
   Future<PowerSyncCredentials?> fetchCredentials() async {
-    const uri = 'http://localhost:3000/api/auth/login/funcionario';
-    final endpoint = Uri.parse(uri);
+    const authUri = 'http://10.0.2.2:3000/api/auth/login/funcionario';
+    final authEndpoint = Uri.parse(authUri);
+    final powerSyncEndpoint = "http://10.0.2.2:8080";
+
     const username = "admin@nexsyn.com";
     const password = "12345678";
 
     final response = await http.post(
-      endpoint,
+      authEndpoint,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $authToken'
@@ -33,7 +35,7 @@ class MyBackendConnector extends PowerSyncBackendConnector {
     final token = responseBody["accessToken"];
 
     return PowerSyncCredentials(
-      endpoint: uri,
+      endpoint: powerSyncEndpoint,
       token: token,
     );
   }
@@ -52,7 +54,7 @@ class MyBackendConnector extends PowerSyncBackendConnector {
     }).toList();
 
     final response = await http.post(
-      Uri.parse('http://localhost:3000/api/powersync/sync-updates'),
+      Uri.parse('http://10.0.2.2:3000/api/powersync/sync-updates'),
       headers: {
         'Content-Type': 'application/json',
         // token opcional se o endpoint exigir autenticação
